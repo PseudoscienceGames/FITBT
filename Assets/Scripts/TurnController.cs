@@ -55,5 +55,6 @@ public class TurnController : MonoBehaviour
 		}
 		Selector.Instance.SetSelection(turnOrder[0]);
 		UnitUI.Instance.UpdateUI();
+		CameraControl.Instance.FocusCamera(turnOrder[0].gridLoc);
 	}
 }

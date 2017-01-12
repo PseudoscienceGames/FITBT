@@ -10,16 +10,36 @@ public class CameraControl : MonoBehaviour
     public int zoomMax;
     public float zoomSpeed;
     public float cameraRotSpeed;
+	public float camPanSpeed;
+	public int scrollAreaSize;
 
     public GameObject cameraPivot;
 
+	public static CameraControl Instance;
+	void Awake() { Instance = this; }
+
     void Update()
     {
+		if(Input.GetAxis("Vertical") != 0)
+			transform.position += transform.forward * Input.GetAxisRaw("Vertical") * camPanSpeed;
+		if (Input.GetAxis("Horizontal") != 0)
+			transform.position += transform.right * Input.GetAxisRaw("Horizontal") * camPanSpeed;
 		//Pivots camera based on mouse movement
 		if (Input.GetMouseButton(1))
 		{
 			transform.Rotate(Vector3.up, Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime, Space.Self);
 			cameraPivot.transform.Rotate(-Vector3.right, Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime);
+		}
+		else
+		{
+			if (Input.mousePosition.x < scrollAreaSize)
+				transform.position -= transform.right * camPanSpeed;
+			if (Input.mousePosition.x > Camera.main.pixelWidth - scrollAreaSize)
+				transform.position += transform.right * camPanSpeed;
+			if (Input.mousePosition.y < scrollAreaSize)
+				transform.position -= transform.forward * camPanSpeed;
+			if (Input.mousePosition.y > Camera.main.pixelHeight - scrollAreaSize)
+				transform.position += transform.forward * camPanSpeed;
 		}
 
 		//Zoom camera
@@ -38,4 +58,22 @@ public class CameraControl : MonoBehaviour
 			}
 		}
     }
+
+	public void FocusCamera(Vector2 gridLoc)
+	{
+		StartCoroutine(SmoothFocus(gridLoc));
+	}
+
+	IEnumerator SmoothFocus(Vector2 gridLoc)
+	{
+		Vector3 initPos = transform.position;
+		Vector3 targetPos = Grid.Instance.GridToWorld(gridLoc, 0);
+		float timer = 0;
+		while (timer <= 1)
+		{
+			timer += Time.deltaTime;
+			transform.position = Vector3.Lerp(initPos, targetPos, timer);
+			yield return null;
+		}
+	}
 }
