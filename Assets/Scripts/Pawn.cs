@@ -9,6 +9,7 @@ public class Pawn : MonoBehaviour
 
 	void Start()
 	{
+		gridLoc = Grid.Instance.RoundToGrid(transform.position);
 		transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height);
 		TurnController.Instance.units.Add(this);
 	}

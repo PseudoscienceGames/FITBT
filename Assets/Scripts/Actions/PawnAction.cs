@@ -16,12 +16,12 @@ public class PawnAction : MonoBehaviour
 	{
 		//if (isMove)
 		//{
-		//	GetComponent<Unit>().ap -= cost * Vector3.Distance(GetComponent<MapObject>().gridLoc.ToVector3(), gridLoc.ToVector3());
+		//	GetComponent<Pawn>().ap -= cost * Vector3.Distance(GetComponent<MapObject>().gridLoc.ToVector3(), gridLoc.ToVector3());
 		//}
 		//else
 		//{
 		//	GetComponent<Unit>().ap -= cost;
 		//}
-		//TurnController.Instance.NextUnit();
+		TurnController.Instance.NextUnit();
 	}
 }

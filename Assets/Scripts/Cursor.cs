@@ -6,7 +6,6 @@ public class Cursor : MonoBehaviour
 	public PawnAction selectedAction;
 	public bool on = false;
 	public Vector2 gridLoc;
-	public Vector3 p;
 
 	public static Cursor Instance;
 	void Awake() { Instance = this; }
@@ -20,8 +19,8 @@ public class Cursor : MonoBehaviour
 			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, LayerMask.GetMask("Ground")))
 			{
 				gridLoc = Grid.Instance.RoundToGrid(hit.point);
-				p = hit.point;
-                transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height); ;
+				if(IslandData.Instance.tiles.ContainsKey(gridLoc))
+	                transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height); ;
 
 			}
 			if (Input.GetMouseButtonDown(0))

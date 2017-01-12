@@ -8,6 +8,7 @@ public class IslandMesh : MonoBehaviour
 	private List<int> tris = new List<int>();
 	private List<Vector2> uvs = new List<Vector2>();
 	private int vertNumber = 0;
+	public bool addNoise;
 
 	IslandData data;
 
@@ -142,6 +143,8 @@ public class IslandMesh : MonoBehaviour
 		Vector3 noise = new Vector3(Mathf.PerlinNoise(0, worldLoc.z), Mathf.PerlinNoise(worldLoc.z, worldLoc.x), Mathf.PerlinNoise(worldLoc.x, 0));
 		noise -= Vector3.one * 0.5f;
 		noise *= 0.3f;
-		return worldLoc;// + noise;
+		if (addNoise)
+			worldLoc += noise;
+		return worldLoc;
 	}
 }
