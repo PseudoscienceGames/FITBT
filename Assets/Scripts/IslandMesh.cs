@@ -110,11 +110,11 @@ public class IslandMesh : MonoBehaviour
 			otherTile2 = data.tiles[Grid.Instance.MoveTo(tile.gridLoc, vertDir + 1)];
 		if (otherTile1 != null)
 		{
-			if (tile.connections.Contains(otherTile1))
+			if (tile.connections.Contains(otherTile1.gridLoc))
 			{
 				height += otherTile1.height;
 				connections++;
-				if(otherTile2 != null && !tile.connections.Contains(otherTile2) && otherTile1.connections.Contains(otherTile2))
+				if(otherTile2 != null && !tile.connections.Contains(otherTile2.gridLoc) && otherTile1.connections.Contains(otherTile2.gridLoc))
 				{
 					height += otherTile2.height;
 					connections++;
@@ -123,11 +123,11 @@ public class IslandMesh : MonoBehaviour
 		}
 		if (otherTile2 != null)
 		{
-			if (tile.connections.Contains(otherTile2))
+			if (tile.connections.Contains(otherTile2.gridLoc))
 			{
 				height += otherTile2.height;
 				connections++;
-				if (otherTile1 != null && !tile.connections.Contains(otherTile1) && otherTile2.connections.Contains(otherTile1))
+				if (otherTile1 != null && !tile.connections.Contains(otherTile1.gridLoc) && otherTile2.connections.Contains(otherTile1.gridLoc))
 				{
 					height += otherTile1.height;
 					connections++;

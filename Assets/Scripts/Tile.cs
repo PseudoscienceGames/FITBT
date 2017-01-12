@@ -7,7 +7,7 @@ public class Tile
 	public Vector2 gridLoc;
 	public float height;
 	public Vector3 worldLoc;
-	public List<Tile> connections = new List<Tile>();
+	public List<Vector2> connections = new List<Vector2>();
 	public List<Vector3> verts = new List<Vector3>();
 	public List<int> tris = new List<int>();
 

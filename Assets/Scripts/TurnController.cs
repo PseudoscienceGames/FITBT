@@ -53,10 +53,7 @@ public class TurnController : MonoBehaviour
 		{
 			CalcTurnOrder();
 		}
-		else
-		{
-			Selector.Instance.SetSelection(turnOrder[0]);
-			UnitUI.Instance.UpdateUI();
-		}
+		Selector.Instance.SetSelection(turnOrder[0]);
+		UnitUI.Instance.UpdateUI();
 	}
 }

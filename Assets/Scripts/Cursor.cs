@@ -18,10 +18,12 @@ public class Cursor : MonoBehaviour
 
 			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, LayerMask.GetMask("Ground")))
 			{
-				gridLoc = Grid.Instance.RoundToGrid(hit.point);
-				if(IslandData.Instance.tiles.ContainsKey(gridLoc))
-	                transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height); ;
-
+				Vector2 tempGridLoc = Grid.Instance.RoundToGrid(hit.point);
+				if (IslandData.Instance.tiles.ContainsKey(tempGridLoc) && (selectedAction.possibleMoves.ContainsKey(tempGridLoc) || selectedAction.possibleMoves.Count == 0))
+				{
+					gridLoc = tempGridLoc;
+					transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height); ;
+				}
 			}
 			if (Input.GetMouseButtonDown(0))
 			{
@@ -34,6 +36,7 @@ public class Cursor : MonoBehaviour
 	{
 		selectedAction = action;
 		transform.GetChild(0).gameObject.SetActive(true);
+		action.SetUp();
 		on = true;
 	}
 

@@ -53,10 +53,8 @@ public class IslandData : MonoBehaviour
 		{
 			tiles.Add(Vector2.zero, new Tile(Vector2.zero));
 			List<Vector2> possibleAdds = new List<Vector2>(Grid.Instance.FindAdjacentGridLocs(Vector2.zero));
-			int x = 0;
-			while(tiles.Count < tileCount && x < 1000)
+			while(tiles.Count < tileCount)
 			{
-				x++;
 				Vector2 gridLoc = possibleAdds[Mathf.RoundToInt(Random.Range(0, possibleAdds.Count) / roundness)];
 				if (!tiles.ContainsKey(gridLoc))
 				{
@@ -82,7 +80,7 @@ public class IslandData : MonoBehaviour
 			{
 				if (tiles.ContainsKey(gridLoc) && Mathf.Abs(tile.height - tiles[gridLoc].height) <= Grid.Instance.maxHeightDifference)
 				{
-					tile.connections.Add(tiles[gridLoc]);
+					tile.connections.Add(gridLoc);
 					if(drawConnections)
 						Debug.DrawLine(tile.worldLoc, tiles[gridLoc].worldLoc, Color.red, Mathf.Infinity);
 				}
