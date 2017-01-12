@@ -15,6 +15,9 @@ public class IslandData : MonoBehaviour
 	public bool drawConnections;
 	public GameObject test;
 
+	public static IslandData Instance;
+	void Awake() { Instance = this; }
+
 	void Start()
 	{
 		AddTiles();
@@ -92,7 +95,7 @@ public class IslandData : MonoBehaviour
 	{
 		foreach (Tile tile in tiles.Values)
 		{
-			tile.SetHeight(Random.Range(0f, heightMax));
+			tile.SetHeight(0);// Random.Range(0f, heightMax));
 		}
 	}
 }
