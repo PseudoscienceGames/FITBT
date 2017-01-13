@@ -14,6 +14,7 @@ public class Walk : PawnAction
 
 	public override void SetUp()
 	{
+		base.SetUp();
 		Pawn pawn = GetComponent<Pawn>();
 		possibleMoves.Clear();
 		List<Vector2> toCheck = new List<Vector2>();
@@ -45,6 +46,7 @@ public class Walk : PawnAction
 
 	public override void Act(Vector2 gridLoc)
 	{
+		StopAllCoroutines();
 		StartCoroutine(Move(gridLoc));
 		base.Act(gridLoc);
 	}
@@ -59,20 +61,28 @@ public class Walk : PawnAction
 			next = possibleMoves[next];
 		}
 		moves.Reverse();
+		GetComponent<Pawn>().ap -= moves.Count * cost;
 		foreach (Vector2 move in moves)
 		{
-			Debug.DrawLine(transform.position, Grid.Instance.GridToWorld(move, IslandData.Instance.tiles[move].height), Color.green, Mathf.Infinity);
+			//Debug.DrawLine(transform.position, Grid.Instance.GridToWorld(move, IslandData.Instance.tiles[move].height), Color.green, Mathf.Infinity);
 			Vector3 worldLoc = Grid.Instance.GridToWorld(move, IslandData.Instance.tiles[move].height);
 			Vector3 initialPos = transform.position;
 			float timer = 0;
-			while (Vector3.Distance(transform.position, worldLoc) > 0)
+			int x = 0;
+			transform.LookAt(Grid.Instance.GridToWorld(move, transform.position.y));
+			while (Vector3.Distance(transform.position, worldLoc) > 0 && x < 1000)
 			{
-				transform.position = Vector3.Lerp(initialPos, worldLoc, timer * 5);
+				x++;
+				transform.position = Vector3.Lerp(initialPos, worldLoc, timer * 2);
+				Camera.main.transform.root.position = new Vector3(transform.position.x, 0, transform.position.z);
+				Selector.Instance.transform.position = transform.position;
 				timer += Time.deltaTime;
 				yield return null;
 			}
 		}
 		GetComponent<Pawn>().gridLoc = gridLoc;
+		if (GetComponent<AIControl>() != null)
+			GetComponent<AIControl>().Activate();
 		yield return null;
 	}
 }

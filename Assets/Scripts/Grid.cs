@@ -31,9 +31,6 @@ public class Grid : MonoBehaviour
 	public Vector2 RoundToGrid(Vector3 worldLoc)
 	{
 		Vector2 gridLoc;
-		//gridLoc.x = Mathf.Round(worldLoc.z * Mathf.Sqrt(3) / 3 - worldLoc.x / 3 / hexRadius);
-		//gridLoc.y = Mathf.Round(worldLoc.x * 2 / 3 / hexRadius);
-
 		gridLoc.x = Mathf.Round(worldLoc.z / (1.5f * hexRadius));
 		gridLoc.y = Mathf.Round((worldLoc.x / (Mathf.Sqrt(3) * hexRadius)) - (gridLoc.x * 0.5f));// - (gridLoc.x * hexRadius * Mathf.Sqrt(3) * 0.5f));
 		return gridLoc;

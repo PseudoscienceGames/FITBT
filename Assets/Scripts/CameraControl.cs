@@ -12,6 +12,7 @@ public class CameraControl : MonoBehaviour
     public float cameraRotSpeed;
 	public float camPanSpeed;
 	public int scrollAreaSize;
+	public bool screenEdgeScroll;
 
     public GameObject cameraPivot;
 
@@ -30,7 +31,7 @@ public class CameraControl : MonoBehaviour
 			transform.Rotate(Vector3.up, Input.GetAxisRaw("Mouse X") * cameraRotSpeed * Time.deltaTime, Space.Self);
 			cameraPivot.transform.Rotate(-Vector3.right, Input.GetAxisRaw("Mouse Y") * cameraRotSpeed * Time.deltaTime);
 		}
-		else
+		else if(screenEdgeScroll)
 		{
 			if (Input.mousePosition.x < scrollAreaSize)
 				transform.position -= transform.right * camPanSpeed;
@@ -41,6 +42,8 @@ public class CameraControl : MonoBehaviour
 			if (Input.mousePosition.y > Camera.main.pixelHeight - scrollAreaSize)
 				transform.position += transform.forward * camPanSpeed;
 		}
+		if (Input.GetMouseButton(2))
+			transform.position -= transform.TransformVector( new Vector3(Input.GetAxis("Mouse X"), 0, Input.GetAxis("Mouse Y")));
 
 		//Zoom camera
 		zoom = -Camera.main.transform.localPosition.z;
@@ -61,6 +64,7 @@ public class CameraControl : MonoBehaviour
 
 	public void FocusCamera(Vector2 gridLoc)
 	{
+		StopAllCoroutines();
 		StartCoroutine(SmoothFocus(gridLoc));
 	}
 
@@ -68,6 +72,7 @@ public class CameraControl : MonoBehaviour
 	{
 		Vector3 initPos = transform.position;
 		Vector3 targetPos = Grid.Instance.GridToWorld(gridLoc, 0);
+
 		float timer = 0;
 		while (timer <= 1)
 		{

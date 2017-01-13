@@ -23,7 +23,7 @@ public class IslandMesh : MonoBehaviour
 		mesh.uv = uvs.ToArray();
 		mesh.RecalculateNormals();
 		GetComponent<MeshCollider>().sharedMesh = mesh;
-		Debug.Log(verts.Count);
+		//Debug.Log(verts.Count);
 	}
 
 	void AddTops()

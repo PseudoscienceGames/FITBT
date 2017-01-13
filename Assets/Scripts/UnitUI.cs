@@ -19,8 +19,7 @@ public class UnitUI : MonoBehaviour
 		{
 			GameObject currentButton = Instantiate(buttonPrefab) as GameObject;
 			currentButton.transform.SetParent(transform);
-			currentButton.transform.GetChild(0).GetComponent<Text>().text = action.actionName;
-			currentButton.GetComponent<Button>().onClick.AddListener(delegate { Cursor.Instance.SelectAction(action); });
+			action.SetButton(currentButton);
 		}
 	}
 }

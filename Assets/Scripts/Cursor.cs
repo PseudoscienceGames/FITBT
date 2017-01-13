@@ -46,5 +46,6 @@ public class Cursor : MonoBehaviour
 		selectedAction = null;
 		transform.GetChild(0).gameObject.SetActive(false);
 		on = false;
+
 	}
 }

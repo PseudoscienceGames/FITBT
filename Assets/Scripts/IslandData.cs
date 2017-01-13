@@ -81,8 +81,8 @@ public class IslandData : MonoBehaviour
 				if (tiles.ContainsKey(gridLoc) && Mathf.Abs(tile.height - tiles[gridLoc].height) <= Grid.Instance.maxHeightDifference)
 				{
 					tile.connections.Add(gridLoc);
-					if(drawConnections)
-						Debug.DrawLine(tile.worldLoc, tiles[gridLoc].worldLoc, Color.red, Mathf.Infinity);
+					//if(drawConnections)
+						//Debug.DrawLine(tile.worldLoc, tiles[gridLoc].worldLoc, Color.red, Mathf.Infinity);
 				}
 			}
 		}

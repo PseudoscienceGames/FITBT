@@ -17,7 +17,7 @@ public class TurnController : MonoBehaviour
 		if(go)
 		{
 			go = false;
-			CalcTurnOrder();
+			NextUnit();
 		}
 	}
 
@@ -28,6 +28,7 @@ public class TurnController : MonoBehaviour
 		foreach(Pawn unit in units)
 		{
 			turns.Add(unit.GetInitiative(), unit);
+			unit.ap = unit.totalAP;
 		}
 
 		float highestInit = 0;
@@ -42,19 +43,24 @@ public class TurnController : MonoBehaviour
 			turns.Remove(highestInit);
 			highestInit = 0;
 		}
-		Selector.Instance.SetSelection(turnOrder[0]);
-		UnitUI.Instance.UpdateUI();
-	}
+		//UpdateForNextUnit();
+    }
 
 	public void NextUnit()
 	{
-		turnOrder.RemoveAt(0);
 		if (turnOrder.Count == 0)
-		{
 			CalcTurnOrder();
-		}
+		SelectNextUnit();
+		turnOrder.RemoveAt(0);
+	}
+
+	void SelectNextUnit()
+	{
 		Selector.Instance.SetSelection(turnOrder[0]);
-		UnitUI.Instance.UpdateUI();
 		CameraControl.Instance.FocusCamera(turnOrder[0].gridLoc);
+		if (turnOrder[0].GetComponent<AIControl>() != null)
+			turnOrder[0].GetComponent<AIControl>().Activate();
+		else
+			UnitUI.Instance.UpdateUI();
 	}
 }

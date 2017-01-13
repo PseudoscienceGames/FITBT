@@ -16,6 +16,11 @@ public class Pawn : MonoBehaviour
 
 	public float GetInitiative()
 	{
-		return Random.Range(0f, 101f);
+		return Random.Range(0f, 100f);
+	}
+
+	public void EndTurn()
+	{
+		TurnController.Instance.NextUnit();
 	}
 }
