@@ -6,6 +6,7 @@ using System.Linq;
 public class IslandData : MonoBehaviour
 {
 	public Dictionary<Vector2, Tile> tiles = new Dictionary<Vector2, Tile>();
+	public Dictionary<Vector2, MapObject> mapObjects = new Dictionary<Vector2, MapObject>();
 	public int mapGridRadius;
 	public int tileCount;
 	public float heightMin;

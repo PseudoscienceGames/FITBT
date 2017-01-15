@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Pawn : MonoBehaviour
+public class Pawn : MapObject
 {
-	public Vector2 gridLoc;
+	public float totalHP;
+	public float hp;
 	public float totalAP;
 	public float ap;
 
-	void Start()
+	public override void Start()
 	{
-		gridLoc = Grid.Instance.RoundToGrid(transform.position);
-		transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height);
+		base.Start();
 		TurnController.Instance.units.Add(this);
 	}
 
@@ -22,5 +22,21 @@ public class Pawn : MonoBehaviour
 	public void EndTurn()
 	{
 		TurnController.Instance.NextUnit();
+	}
+
+	public void TakeDamage(float damage)
+	{
+		hp -= damage;
+		if (hp < 0)
+			Kill();
+	}
+
+	public void Kill()
+	{
+		TurnController.Instance.units.Remove(this);
+		if(TurnController.Instance.turnOrder.Contains(this))
+			TurnController.Instance.turnOrder.Remove(this);
+		IslandData.Instance.mapObjects.Remove(gridLoc);
+		Destroy(gameObject);
 	}
 }

@@ -28,7 +28,6 @@ public class Cursor : MonoBehaviour
 					transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height);
 					if (gridLoc != oldGridLoc && selectedAction.GetComponent<AIControl>() == null && selectedAction.actionName == "Move")
 					{
-						Debug.Log(selectedAction.actionName);
 						ShowPath();
 					}
 				}
@@ -42,10 +41,13 @@ public class Cursor : MonoBehaviour
 
 	public void SelectAction(PawnAction action)
 	{
-		selectedAction = action;
-		transform.GetChild(0).gameObject.SetActive(true);
-		action.SetUp();
-		on = true;
+		if (action.GetComponent<Pawn>().ap >= action.cost)
+		{
+			selectedAction = action;
+			transform.GetChild(0).gameObject.SetActive(true);
+			action.SetUp();
+			on = true;
+		}
 	}
 
 	void SetAction()

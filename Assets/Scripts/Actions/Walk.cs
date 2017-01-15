@@ -9,6 +9,7 @@ public class Walk : PawnAction
 	void Start()
 	{
 		actionName = "Move";
+		cost = 1;
 		isMove = true;
 	}
 
@@ -32,7 +33,7 @@ public class Walk : PawnAction
 				List<Vector2> adjacentTiles = Grid.Instance.FindAdjacentGridLocs(gridLoc);
 				foreach(Vector2 adjGridLoc in adjacentTiles)
 				{
-					if (!possibleMoves.ContainsKey(adjGridLoc) && IslandData.Instance.tiles[gridLoc].connections.Contains(adjGridLoc))
+					if (!possibleMoves.ContainsKey(adjGridLoc) && IslandData.Instance.tiles[gridLoc].connections.Contains(adjGridLoc) && !IslandData.Instance.mapObjects.ContainsKey(adjGridLoc))
 					{
 						possibleMoves.Add(adjGridLoc, gridLoc);
 						checkNext.Add(adjGridLoc);
@@ -53,15 +54,16 @@ public class Walk : PawnAction
 
 	IEnumerator Move(Vector2 gridLoc)
 	{
+		Pawn pawn = GetComponent<Pawn>();
 		List<Vector2> moves = new List<Vector2>();
 		Vector2 next = gridLoc;
-		while(next != GetComponent<Pawn>().gridLoc)
+		while(next != pawn.gridLoc)
 		{
 			moves.Add(next);
 			next = possibleMoves[next];
 		}
 		moves.Reverse();
-		GetComponent<Pawn>().ap -= moves.Count * cost;
+		pawn.ap -= moves.Count * cost;
 		foreach (Vector2 move in moves)
 		{
 			//Debug.DrawLine(transform.position, Grid.Instance.GridToWorld(move, IslandData.Instance.tiles[move].height), Color.green, Mathf.Infinity);
@@ -80,9 +82,10 @@ public class Walk : PawnAction
 				yield return null;
 			}
 		}
-		GetComponent<Pawn>().gridLoc = gridLoc;
+		IslandData.Instance.mapObjects.Remove(pawn.gridLoc);
+        pawn.gridLoc = gridLoc;
+		IslandData.Instance.mapObjects.Add(gridLoc, pawn);
 		if (GetComponent<AIControl>() != null)
 			GetComponent<AIControl>().Activate();
-		yield return null;
 	}
 }

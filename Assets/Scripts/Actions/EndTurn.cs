@@ -6,6 +6,7 @@ public class EndTurn : PawnAction
 	void Start()
 	{
 		actionName = "End Turn";
+		cost = 0;
 	}
 
 	public override void SetUp()
