@@ -1,5 +1,4 @@
-﻿//1
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -71,7 +70,7 @@ public class CameraControl : MonoBehaviour
 	IEnumerator SmoothFocus(Vector2 gridLoc)
 	{
 		Vector3 initPos = transform.position;
-		Vector3 targetPos = Grid.Instance.GridToWorld(gridLoc, 0);
+		Vector3 targetPos = Grid.GridToWorld(gridLoc, 0);
 
 		float timer = 0;
 		while (timer <= 1)

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class Walk : PawnAction
 {
 	public float moveSpeed;//tiles per ap
@@ -30,7 +31,7 @@ public class Walk : PawnAction
 			checkNext.Clear();
 			foreach (Vector2 gridLoc in toCheck)
 			{
-				List<Vector2> adjacentTiles = Grid.Instance.FindAdjacentGridLocs(gridLoc);
+				List<Vector2> adjacentTiles = Grid.FindAdjacentGridLocs(gridLoc);
 				foreach(Vector2 adjGridLoc in adjacentTiles)
 				{
 					if (!possibleMoves.ContainsKey(adjGridLoc) && IslandData.Instance.tiles[gridLoc].connections.Contains(adjGridLoc) && !IslandData.Instance.mapObjects.ContainsKey(adjGridLoc))
@@ -42,11 +43,12 @@ public class Walk : PawnAction
 			}
 		}
 		//foreach (Vector2 loc in possibleMoves.Keys)
-		//	Debug.DrawLine(Grid.Instance.GridToWorld(pawn.gridLoc, 0), Grid.Instance.GridToWorld(loc, 0), Color.red, Mathf.Infinity);
+		//	Debug.DrawLine(Grid.GridToWorld(pawn.gridLoc, 0), Grid.GridToWorld(loc, 0), Color.red, Mathf.Infinity);
     }
 
 	public override void Act(Vector2 gridLoc)
 	{
+		NotificationCenter.DefaultCenter.PostNotification(null, "Moving");
 		StopAllCoroutines();
 		StartCoroutine(Move(gridLoc));
 		base.Act(gridLoc);
@@ -66,12 +68,12 @@ public class Walk : PawnAction
 		pawn.ap -= moves.Count * cost;
 		foreach (Vector2 move in moves)
 		{
-			//Debug.DrawLine(transform.position, Grid.Instance.GridToWorld(move, IslandData.Instance.tiles[move].height), Color.green, Mathf.Infinity);
-			Vector3 worldLoc = Grid.Instance.GridToWorld(move, IslandData.Instance.tiles[move].height);
+			//Debug.DrawLine(transform.position, Grid.GridToWorld(move, IslandData.Instance.tiles[move].height), Color.green, Mathf.Infinity);
+			Vector3 worldLoc = Grid.GridToWorld(move, IslandData.Instance.tiles[move].height);
 			Vector3 initialPos = transform.position;
 			float timer = 0;
 			int x = 0;
-			transform.LookAt(Grid.Instance.GridToWorld(move, transform.position.y));
+			transform.LookAt(Grid.GridToWorld(move, transform.position.y));
 			while (Vector3.Distance(transform.position, worldLoc) > 0 && x < 1000)
 			{
 				x++;
@@ -85,6 +87,7 @@ public class Walk : PawnAction
 		IslandData.Instance.mapObjects.Remove(pawn.gridLoc);
         pawn.gridLoc = gridLoc;
 		IslandData.Instance.mapObjects.Add(gridLoc, pawn);
+		NotificationCenter.DefaultCenter.PostNotification(null, "MoveDone");
 		if (GetComponent<AIControl>() != null)
 			GetComponent<AIControl>().Activate();
 	}

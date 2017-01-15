@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class EndTurn : PawnAction
 {
@@ -14,5 +15,11 @@ public class EndTurn : PawnAction
 		base.SetUp();
 		//Debug.Log(transform.name + " " + "EndTurn");
 		GetComponent<Pawn>().EndTurn();
+	}
+
+	public override void SetButton(GameObject button)
+	{
+		base.SetButton(button);
+		button.GetComponent<Button>().onClick.AddListener(delegate { Cursor.Instance.SetAction(); });
 	}
 }

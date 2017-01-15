@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class Tile
 {
 	public Vector2 gridLoc;
@@ -25,6 +26,6 @@ public class Tile
 	public void SetHeight(float height)
 	{
 		this.height = height;
-		worldLoc = Grid.Instance.GridToWorld(gridLoc, height);
+		worldLoc = Grid.GridToWorld(gridLoc, height);
 	}
 }

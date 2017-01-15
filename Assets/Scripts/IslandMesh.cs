@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class IslandMesh : MonoBehaviour
 {
 	private List<Vector3> verts = new List<Vector3>();
@@ -39,13 +40,13 @@ public class IslandMesh : MonoBehaviour
 		verts.Add(tile.worldLoc);
 		for (int i = 0; i <= 5; i++)
 		{
-			Vector3 vertex1WorldLoc = tile.worldLoc + (Quaternion.Euler(0, (60 * i), 0) * Vector3.forward * Grid.Instance.hexRadius);
+			Vector3 vertex1WorldLoc = tile.worldLoc + (Quaternion.Euler(0, (60 * i), 0) * Vector3.forward * Grid.hexRadius);
 			float height1 = FindVertHeight(tile, i);
 			vertex1WorldLoc.y = height1;
 			verts.Add(AddNoise(vertex1WorldLoc));
 			tris.Add(vertNumber);
-			tris.Add(vertNumber + Grid.Instance.MoveDirFix(i) + 1);
-			tris.Add(vertNumber + Grid.Instance.MoveDirFix(i + 1) + 1);
+			tris.Add(vertNumber + Grid.MoveDirFix(i) + 1);
+			tris.Add(vertNumber + Grid.MoveDirFix(i + 1) + 1);
 		}
 		vertNumber += 7;
 		uvs.Add(new Vector2(0.5f, 0.5f));
@@ -60,8 +61,8 @@ public class IslandMesh : MonoBehaviour
 	{
 		for (int i = 0; i <= 5; i++)
 		{
-			Vector3 vertex1WorldLoc = tile.worldLoc + (Quaternion.Euler(0, (60 * i), 0) * Vector3.forward * Grid.Instance.hexRadius);
-			Vector3 vertex2WorldLoc = tile.worldLoc + (Quaternion.Euler(0, (60 * Grid.Instance.MoveDirFix(i + 1)), 0) * Vector3.forward * Grid.Instance.hexRadius);
+			Vector3 vertex1WorldLoc = tile.worldLoc + (Quaternion.Euler(0, (60 * i), 0) * Vector3.forward * Grid.hexRadius);
+			Vector3 vertex2WorldLoc = tile.worldLoc + (Quaternion.Euler(0, (60 * Grid.MoveDirFix(i + 1)), 0) * Vector3.forward * Grid.hexRadius);
 			Vector3 vertex3WorldLoc = vertex2WorldLoc;
 			Vector3 vertex4WorldLoc = vertex1WorldLoc;
 
@@ -96,18 +97,17 @@ public class IslandMesh : MonoBehaviour
 			uvs.Add(new Vector2(0, 0));
 		}
 	}
-
 	float FindVertHeight(Tile tile, int vertDir)
 	{
-		vertDir = Grid.Instance.MoveDirFix(vertDir);
+		vertDir = Grid.MoveDirFix(vertDir);
 		float height = tile.height;
 		int connections = 1;
 		Tile otherTile1 = null;
 		Tile otherTile2 = null;
-		if (data.tiles.ContainsKey(Grid.Instance.MoveTo(tile.gridLoc, vertDir)))
-			otherTile1 = data.tiles[Grid.Instance.MoveTo(tile.gridLoc, vertDir)];
-		if (data.tiles.ContainsKey(Grid.Instance.MoveTo(tile.gridLoc, vertDir + 1)))
-			otherTile2 = data.tiles[Grid.Instance.MoveTo(tile.gridLoc, vertDir + 1)];
+		if (data.tiles.ContainsKey(Grid.MoveTo(tile.gridLoc, vertDir)))
+			otherTile1 = data.tiles[Grid.MoveTo(tile.gridLoc, vertDir)];
+		if (data.tiles.ContainsKey(Grid.MoveTo(tile.gridLoc, vertDir + 1)))
+			otherTile2 = data.tiles[Grid.MoveTo(tile.gridLoc, vertDir + 1)];
 		if (otherTile1 != null)
 		{
 			if (tile.connections.Contains(otherTile1.gridLoc))
@@ -137,7 +137,6 @@ public class IslandMesh : MonoBehaviour
 		height /= connections;
 		return height;
 	}
-
 	Vector3 AddNoise(Vector3 worldLoc)
 	{
 		Vector3 noise = new Vector3(Mathf.PerlinNoise(0, worldLoc.z), Mathf.PerlinNoise(worldLoc.z, worldLoc.x), Mathf.PerlinNoise(worldLoc.x, 0));

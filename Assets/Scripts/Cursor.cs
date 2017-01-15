@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class Cursor : MonoBehaviour
 {
 	public PawnAction selectedAction;
@@ -21,15 +22,13 @@ public class Cursor : MonoBehaviour
 			oldGridLoc = gridLoc;
 			if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, LayerMask.GetMask("Ground")))
 			{
-				Vector2 tempGridLoc = Grid.Instance.RoundToGrid(hit.point);
+				Vector2 tempGridLoc = Grid.RoundToGrid(hit.point);
 				if (IslandData.Instance.tiles.ContainsKey(tempGridLoc) && (selectedAction.possibleMoves.ContainsKey(tempGridLoc) || selectedAction.possibleMoves.Count == 0))
 				{
 					gridLoc = tempGridLoc;
-					transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height);
+					transform.position = Grid.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height);
 					if (gridLoc != oldGridLoc && selectedAction.GetComponent<AIControl>() == null && selectedAction.actionName == "Move")
-					{
 						ShowPath();
-					}
 				}
 			}
 			if (Input.GetMouseButtonDown(0))
@@ -50,7 +49,7 @@ public class Cursor : MonoBehaviour
 		}
 	}
 
-	void SetAction()
+	public void SetAction()
 	{
 		ClearPath();
 		selectedAction.Act(gridLoc);
@@ -65,7 +64,7 @@ public class Cursor : MonoBehaviour
 		Vector2 next = gridLoc;
 		while (next != selectedAction.GetComponent<Pawn>().gridLoc)
 		{
-			GameObject marker = Instantiate(markerPrefab, Grid.Instance.GridToWorld(next, IslandData.Instance.tiles[next].height), Quaternion.identity) as GameObject;
+			GameObject marker = Instantiate(markerPrefab, Grid.GridToWorld(next, IslandData.Instance.tiles[next].height), Quaternion.identity) as GameObject;
 			marker.transform.parent = transform;
 			next = selectedAction.possibleMoves[next];
 		}

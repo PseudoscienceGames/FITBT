@@ -7,8 +7,8 @@ public class MapObject : MonoBehaviour
 
 	public virtual void Start()
 	{
-		gridLoc = Grid.Instance.RoundToGrid(transform.position);
-		transform.position = Grid.Instance.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height);
+		gridLoc = Grid.RoundToGrid(transform.position);
+		transform.position = Grid.GridToWorld(gridLoc, IslandData.Instance.tiles[gridLoc].height);
 		if (!IslandData.Instance.mapObjects.ContainsKey(gridLoc))
 			IslandData.Instance.mapObjects.Add(gridLoc, this);
 		else

@@ -29,7 +29,7 @@ public class Attack : PawnAction
 			checkNext.Clear();
 			foreach (Vector2 gridLoc in toCheck)
 			{
-				List<Vector2> adjacentTiles = Grid.Instance.FindAdjacentGridLocs(gridLoc);
+				List<Vector2> adjacentTiles = Grid.FindAdjacentGridLocs(gridLoc);
 				foreach (Vector2 adjGridLoc in adjacentTiles)
 				{
 					if (!possibleMoves.ContainsKey(adjGridLoc) && IslandData.Instance.tiles[gridLoc].connections.Contains(adjGridLoc) && IslandData.Instance.mapObjects.ContainsKey(adjGridLoc))
@@ -41,11 +41,12 @@ public class Attack : PawnAction
 			}
 		}
 		//foreach (Vector2 loc in possibleMoves.Keys)
-		//	Debug.DrawLine(Grid.Instance.GridToWorld(pawn.gridLoc, 0), Grid.Instance.GridToWorld(loc, 0), Color.red, Mathf.Infinity);
+		//	Debug.DrawLine(Grid.GridToWorld(pawn.gridLoc, 0), Grid.GridToWorld(loc, 0), Color.red, Mathf.Infinity);
 	}
 
 	public override void Act(Vector2 gridLoc)
 	{
+		NotificationCenter.DefaultCenter.PostNotification(null, "Moving");
 		StopAllCoroutines();
 		StartCoroutine(Move(gridLoc));
 		base.Act(gridLoc);
@@ -63,6 +64,7 @@ public class Attack : PawnAction
 		}
 		pawn.ap -= cost;
 		IslandData.Instance.mapObjects[gridLoc].GetComponent<Pawn>().TakeDamage(damage);
+		NotificationCenter.DefaultCenter.PostNotification(null, "MoveDone");
 		if (GetComponent<AIControl>() != null)
 			GetComponent<AIControl>().Activate();
 	}

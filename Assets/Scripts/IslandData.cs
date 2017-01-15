@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+
 public class IslandData : MonoBehaviour
 {
 	public Dictionary<Vector2, Tile> tiles = new Dictionary<Vector2, Tile>();
@@ -19,6 +20,11 @@ public class IslandData : MonoBehaviour
 	void Awake() { Instance = this; }
 
 	void Start()
+	{
+		GenData();
+	}
+
+	void GenData()
 	{
 		AddTiles();
 		FindTileHeights();
@@ -42,7 +48,7 @@ public class IslandData : MonoBehaviour
 				{
 					tiles.Add(gridLoc, new Tile(gridLoc));
 					//Finds next hex in ring
-					gridLoc = Grid.Instance.MoveTo(gridLoc, dir);
+					gridLoc = Grid.MoveTo(gridLoc, dir);
 					if (gridLoc.x == 0 || gridLoc.y == 0 || gridLoc.x == -gridLoc.y)
 					{
 						dir++;
@@ -53,14 +59,14 @@ public class IslandData : MonoBehaviour
 		else
 		{
 			tiles.Add(Vector2.zero, new Tile(Vector2.zero));
-			List<Vector2> possibleAdds = new List<Vector2>(Grid.Instance.FindAdjacentGridLocs(Vector2.zero));
+			List<Vector2> possibleAdds = new List<Vector2>(Grid.FindAdjacentGridLocs(Vector2.zero));
 			while(tiles.Count < tileCount)
 			{
 				Vector2 gridLoc = possibleAdds[Mathf.RoundToInt(Random.Range(0, possibleAdds.Count) / roundness)];
 				if (!tiles.ContainsKey(gridLoc))
 				{
 					tiles.Add(gridLoc, new Tile(gridLoc));
-					foreach(Vector2 adj in Grid.Instance.FindAdjacentGridLocs(gridLoc))
+					foreach(Vector2 adj in Grid.FindAdjacentGridLocs(gridLoc))
 					{
 						if(!possibleAdds.Contains(adj) && !tiles.ContainsKey(adj))
 						{
@@ -77,9 +83,9 @@ public class IslandData : MonoBehaviour
 	{
 		foreach (Tile tile in tiles.Values)
 		{
-			foreach(Vector2 gridLoc in Grid.Instance.FindAdjacentGridLocs(tile.gridLoc))
+			foreach(Vector2 gridLoc in Grid.FindAdjacentGridLocs(tile.gridLoc))
 			{
-				if (tiles.ContainsKey(gridLoc) && Mathf.Abs(tile.height - tiles[gridLoc].height) <= Grid.Instance.maxHeightDifference)
+				if (tiles.ContainsKey(gridLoc) && Mathf.Abs(tile.height - tiles[gridLoc].height) <= Grid.maxHeightDifference)
 				{
 					tile.connections.Add(gridLoc);
 					//if(drawConnections)

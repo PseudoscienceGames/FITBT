@@ -10,7 +10,7 @@ public class PawnAction : MonoBehaviour
 	public bool isMove = false;
 	public Dictionary<Vector2, Vector2> possibleMoves = new Dictionary<Vector2, Vector2>();
 
-	public void SetButton(GameObject button)
+	public virtual void SetButton(GameObject button)
 	{
 		//Debug.Log("SetButton" + actionName);
 		button.transform.GetChild(0).GetComponent<Text>().text = actionName;
