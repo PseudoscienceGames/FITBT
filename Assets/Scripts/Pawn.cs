@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Pawn : MapObject
@@ -7,6 +8,8 @@ public class Pawn : MapObject
 	public float hp;
 	public float totalAP;
 	public float ap;
+	public Image healthBar;
+	public Image actionBar;
 
 	public override void Start()
 	{
@@ -27,8 +30,15 @@ public class Pawn : MapObject
 	public void TakeDamage(float damage)
 	{
 		hp -= damage;
+		healthBar.fillAmount = hp / totalHP;
 		if (hp < 0)
 			Kill();
+	}
+
+	public void UseAP(float amt)
+	{
+		ap -= amt;
+		actionBar.fillAmount = ap / totalAP;
 	}
 
 	public void Kill()

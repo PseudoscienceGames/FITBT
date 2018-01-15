@@ -62,7 +62,7 @@ public class Attack : PawnAction
 			transform.Rotate(Vector3.up * timer * 360f);
 			yield return null;
 		}
-		pawn.ap -= cost;
+		pawn.UseAP(cost);
 		IslandData.Instance.mapObjects[gridLoc].GetComponent<Pawn>().TakeDamage(damage);
 		NotificationCenter.DefaultCenter.PostNotification(null, "MoveDone");
 		if (GetComponent<AIControl>() != null)

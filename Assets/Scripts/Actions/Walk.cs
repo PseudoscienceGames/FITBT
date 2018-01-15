@@ -65,7 +65,7 @@ public class Walk : PawnAction
 			next = possibleMoves[next];
 		}
 		moves.Reverse();
-		pawn.ap -= moves.Count * cost;
+		pawn.UseAP(moves.Count * cost);
 		foreach (Vector2 move in moves)
 		{
 			//Debug.DrawLine(transform.position, Grid.GridToWorld(move, IslandData.Instance.tiles[move].height), Color.green, Mathf.Infinity);
